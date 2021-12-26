@@ -1,28 +1,45 @@
 import React from "react";
 
-class TodoItem extends React.Component {
-  render() {
-    const completedStyle = {
+export default function TodoItem({todo, handleChangeProps, deleteTodoProps}) {
+  const completedStyle = {
       fontStyle: "italic",
       color: "#d35e0f",
       opacity: 0.4,
       textDecoration: "line-through"
     };
 
-    const { completed, id, title } = this.props.todo;
+    const colorsMapping = {
+      'home': "red",
+      'work': "blue",
+      'important': "yellow",
+      "morning": 'green'
+    }
+    const tagsStyle = {
+          width: 'fit-content',
+          margin: '10px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
+          paddingTop: '5px',
+          paddingBottom: '5px',
+          borderRadius: '10px'
+    }
+  const { completed, id, title, tag } = todo;
 
-    return (
+  return (
+    <>
       <li className="todo-item">
         <input
           type="checkbox"
           checked={completed}
-          onChange={() => this.props.handleChangeProps(id)}
+          onChange={() => handleChangeProps(id)}
         />
-        <button onClick={() => this.props.deleteTodoProps(id)}>Delete</button>
+        <button onClick={() =>deleteTodoProps(id)}>Delete</button>
         <span style={completed ? completedStyle : null}>{title}</span>
+        <div style= {{...tagsStyle, background: colorsMapping[tag]}} >{tag}</div>
       </li>
-    );
-  }
+      
+    </>
+  )
 }
 
-export default TodoItem;
+
