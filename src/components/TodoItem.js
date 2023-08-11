@@ -1,7 +1,6 @@
 import React from "react";
 
-class TodoItem extends React.Component {
-  render() {
+const TodoItem = (props) => {
     const completedStyle = {
       fontStyle: "italic",
       color: "#d35e0f",
@@ -9,20 +8,23 @@ class TodoItem extends React.Component {
       textDecoration: "line-through"
     };
 
-    const { completed, id, title } = this.props.todo;
+    const { completed, id, title, tags, user } = props.todo;
 
     return (
       <li className="todo-item">
         <input
           type="checkbox"
           checked={completed}
-          onChange={() => this.props.handleChangeProps(id)}
+          onChange={() => props.handleChangeProps(id)}
         />
-        <button onClick={() => this.props.deleteTodoProps(id)}>Delete</button>
+        <button onClick={() => props.deleteTodoProps(id)}>Delete</button>
         <span style={completed ? completedStyle : null}>{title}</span>
+        <p>Tags</p>
+        <p>{tags.map(tag => tag + ' ')}</p>
+        <p>User</p>
+        <p>{user}</p>
       </li>
     );
-  }
 }
 
 export default TodoItem;
