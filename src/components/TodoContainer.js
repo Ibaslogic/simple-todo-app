@@ -1,37 +1,40 @@
-import React from "react";
+import React, { useState} from "react";
 import TodosList from "./TodosList";
 import Header from "./Header";
 import InputTodo from "./InputTodo";
-// import uuid from "uuid";
 import { v4 as uuidv4 } from "uuid";
 
-class TodoContainer extends React.Component {
-  state = {
-    todos: [
-      {
-        // id: uuid.v4(),
-        id: uuidv4(),
-        title: "Setup development environment",
-        completed: true,
-      },
-      {
-        // id: uuid.v4(),
-        id: uuidv4(),
-        title: "Develop website and add content",
-        completed: false,
-      },
-      {
-        // id: uuid.v4(),
-        id: uuidv4(),
-        title: "Deploy to live server",
-        completed: false,
-      },
-    ],
-  };
+const TodoContainer = () => {
+const [todos, setTodos] = useState({
+  todos: [
+    {
+      id: uuidv4(),
+      title: "Setup development environment",
+      completed: true,
+      tags: ['work', 'wip'],
+      user: 'Beatriz'
+    },
+    {
+      id: uuidv4(),
+      title: "Develop website and add content",
+      completed: false,
+      tags: ['work', 'wip'],
+      user: 'Jonas'
+    },
+    {
+      id: uuidv4(),
+      title: "Deploy to live server",
+      completed: false,
+      tags: ['work', 'wip'],
+      user: 'Joana'
+    },
+  ],
+})
+const completedTodos = {todos: todos.todos.filter(todo => todo.completed === true) }
 
-  handleChange = (id) => {
-    this.setState({
-      todos: this.state.todos.map((todo) => {
+  const handleChange = (id) => {
+    setTodos({
+      todos: todos.todos.map((todo) => {
         if (todo.id === id) {
           todo.completed = !todo.completed;
         }
@@ -40,40 +43,44 @@ class TodoContainer extends React.Component {
     });
   };
 
-  delTodo = (id) => {
-    this.setState({
+  const delTodo = (id) => {
+    setTodos({
       todos: [
-        ...this.state.todos.filter((todo) => {
+        ...todos.todos.filter((todo) => {
           return todo.id !== id;
         }),
       ],
     });
   };
 
-  addTodoItem = (title) => {
+  const addTodoItem = (title, tags, user) => {
     const newTodo = {
-      // id: uuid.v4(),
       id: uuidv4(),
       title: title,
       completed: false,
+      tags: tags,
+      user: user
     };
-    this.setState({
-      todos: [...this.state.todos, newTodo],
+    setTodos({
+      todos: [...todos.todos, newTodo],
     });
   };
 
-  render() {
     return (
-      <div className="container">
+      <><div className="container">
         <Header />
-        <InputTodo addTodoProps={this.addTodoItem} />
+        <InputTodo addTodoProps={addTodoItem} />
         <TodosList
-          todos={this.state.todos}
-          handleChangeProps={this.handleChange}
-          deleteTodoProps={this.delTodo}
-        />
-      </div>
+          todos={todos}
+          handleChangeProps={handleChange}
+          deleteTodoProps={delTodo} />
+      </div><div className="container">
+          <p>Completed Todos</p>
+          <TodosList
+            todos={completedTodos}
+            handleChangeProps={handleChange}
+            deleteTodoProps={delTodo} />
+        </div></>
     );
-  }
 }
 export default TodoContainer;

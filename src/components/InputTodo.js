@@ -1,36 +1,55 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class InputTodo extends Component {
-  state = {
-    title: ""
-  };
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+const InputTodo = (props) => {
+  const [title, setTitle] = useState()
+  const [tag, setTag] = useState([])
+  const [user, setUser] = useState()
+
+  const onChange = e => {
+    setTitle(e.target.value)
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.addTodoProps(this.state.title);
-    this.setState({
-      title: ""
-    });
+    props.addTodoProps(title, tag, user);
+    setTitle('')
   };
-  render() {
+
     return (
-      <form onSubmit={this.handleSubmit} className="form-container">
+      <form onSubmit={handleSubmit} className="form-container">
+        <div>
+          <p>Task:</p>
         <input
           type="text"
           className="input-text"
           placeholder="Add todo..."
-          value={this.state.title}
+          value={title}
           name="title"
-          onChange={this.onChange}
+          onChange={onChange}
         />
+        </div>
+        <div>
+        <p>Tags:</p>
+                <input
+          type="text"
+          className="input-text"
+          value={tag}
+          name="tag"
+          onChange={e => setTag([e.target.value])}
+        />
+        </div>
+        <div>
+        <p>Assign your task:</p>
+                <input
+          type="text"
+          className="input-text"
+          value={user}
+          name="user"
+          onChange={e => setUser(e.target.value)}
+        />
+        </div>
         <input type="submit" className="input-submit" value="Submit" />
       </form>
-    );
-  }
+    )
 }
 export default InputTodo;
